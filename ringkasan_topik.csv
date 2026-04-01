@@ -1,0 +1,9 @@
+topic_id,topic_label,Jumlah_Responden,Avg_Probability,Min_Probability,Max_Probability,Persen_Responden
+0,Kehilangan & Trauma Keluarga,161,0.4545,0.125,0.9286,12.04
+1,Ketakutan & Dampak Banjir,331,0.7036,0.2895,0.9557,24.76
+2,Kerusakan Rumah & Bantuan,136,0.6674,0.2292,0.9103,10.17
+3,Kebersihan & Aktivitas Pemulihan,178,0.6958,0.295,0.9693,13.31
+4,Dampak Pendidikan & Tempat Tidur,89,0.6058,0.2895,0.8971,6.66
+5,Bencana & Kehilangan Tempat Tinggal,65,0.6134,0.2895,0.8971,4.86
+6,Kebutuhan Makan & Aktivitas Fisik,188,0.6844,0.2895,0.9679,14.06
+7,Keluhan Fisik & Kesehatan,189,0.6674,0.3523,0.9607,14.14

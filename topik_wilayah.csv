@@ -1,0 +1,88 @@
+topic_label,Wilayah,Jumlah,Avg_Probability
+Bencana & Kehilangan Tempat Tinggal,Aceh Tamiang,4,0.6458
+Bencana & Kehilangan Tempat Tinggal,Aceh Utara,10,0.6059
+Bencana & Kehilangan Tempat Tinggal,Agam,19,0.6099
+Bencana & Kehilangan Tempat Tinggal,"Desa Sekoci, Langkat",6,0.5274
+Bencana & Kehilangan Tempat Tinggal,Langsa,3,0.6921
+Bencana & Kehilangan Tempat Tinggal,"Nagari Ulakan, Padang Pariaman",3,0.7256
+Bencana & Kehilangan Tempat Tinggal,Pidie Jaya,3,0.4656
+Bencana & Kehilangan Tempat Tinggal,Sibolga Utara,8,0.7308
+Bencana & Kehilangan Tempat Tinggal,Tapsel,6,0.5502
+Bencana & Kehilangan Tempat Tinggal,Tapteng,3,0.5596
+Dampak Pendidikan & Tempat Tidur,Aceh Tamiang,13,0.5826
+Dampak Pendidikan & Tempat Tidur,Aceh Utara,11,0.6301
+Dampak Pendidikan & Tempat Tidur,Agam,6,0.5446
+Dampak Pendidikan & Tempat Tidur,"Desa Kuala Penaga, Aceh Tamiang",5,0.664
+Dampak Pendidikan & Tempat Tidur,"Desa Sekoci, Langkat",7,0.5771
+Dampak Pendidikan & Tempat Tidur,Langsa,9,0.6062
+Dampak Pendidikan & Tempat Tidur,"Nagari Ulakan, Padang Pariaman",6,0.6494
+Dampak Pendidikan & Tempat Tidur,Pidie Jaya,8,0.6354
+Dampak Pendidikan & Tempat Tidur,Sibolga Utara,8,0.6312
+Dampak Pendidikan & Tempat Tidur,Tapsel,4,0.5342
+Dampak Pendidikan & Tempat Tidur,Tapteng,12,0.597
+Kebersihan & Aktivitas Pemulihan,Aceh Tamiang,12,0.628
+Kebersihan & Aktivitas Pemulihan,Aceh Utara,17,0.644
+Kebersihan & Aktivitas Pemulihan,Agam,15,0.7411
+Kebersihan & Aktivitas Pemulihan,"Desa Kuala Penaga, Aceh Tamiang",13,0.6923
+Kebersihan & Aktivitas Pemulihan,"Desa Sekoci, Langkat",18,0.701
+Kebersihan & Aktivitas Pemulihan,Langsa,13,0.6877
+Kebersihan & Aktivitas Pemulihan,"Nagari Ulakan, Padang Pariaman",10,0.687
+Kebersihan & Aktivitas Pemulihan,Pidie Jaya,27,0.7222
+Kebersihan & Aktivitas Pemulihan,Sibolga Utara,12,0.695
+Kebersihan & Aktivitas Pemulihan,Tapsel,6,0.6243
+Kebersihan & Aktivitas Pemulihan,Tapteng,35,0.721
+Kebutuhan Makan & Aktivitas Fisik,Aceh Tamiang,18,0.758
+Kebutuhan Makan & Aktivitas Fisik,Aceh Utara,19,0.6067
+Kebutuhan Makan & Aktivitas Fisik,Agam,26,0.6614
+Kebutuhan Makan & Aktivitas Fisik,"Desa Kuala Penaga, Aceh Tamiang",10,0.6745
+Kebutuhan Makan & Aktivitas Fisik,"Desa Sekoci, Langkat",16,0.6987
+Kebutuhan Makan & Aktivitas Fisik,Langsa,19,0.7633
+Kebutuhan Makan & Aktivitas Fisik,"Nagari Ulakan, Padang Pariaman",3,0.7324
+Kebutuhan Makan & Aktivitas Fisik,Pidie Jaya,1,0.5526
+Kebutuhan Makan & Aktivitas Fisik,Sibolga Utara,28,0.6653
+Kebutuhan Makan & Aktivitas Fisik,Tapsel,26,0.7282
+Kebutuhan Makan & Aktivitas Fisik,Tapteng,22,0.6161
+Kehilangan & Trauma Keluarga,Aceh Tamiang,9,0.3714
+Kehilangan & Trauma Keluarga,Aceh Utara,22,0.5066
+Kehilangan & Trauma Keluarga,Agam,24,0.3276
+Kehilangan & Trauma Keluarga,"Desa Kuala Penaga, Aceh Tamiang",3,0.4124
+Kehilangan & Trauma Keluarga,"Desa Sekoci, Langkat",7,0.5707
+Kehilangan & Trauma Keluarga,Langsa,22,0.3659
+Kehilangan & Trauma Keluarga,"Nagari Ulakan, Padang Pariaman",14,0.3504
+Kehilangan & Trauma Keluarga,Pidie Jaya,3,0.4296
+Kehilangan & Trauma Keluarga,Sibolga Utara,23,0.5038
+Kehilangan & Trauma Keluarga,Tapsel,13,0.5762
+Kehilangan & Trauma Keluarga,Tapteng,21,0.5842
+Keluhan Fisik & Kesehatan,Aceh Tamiang,5,0.6275
+Keluhan Fisik & Kesehatan,Aceh Utara,16,0.6888
+Keluhan Fisik & Kesehatan,Agam,20,0.629
+Keluhan Fisik & Kesehatan,"Desa Kuala Penaga, Aceh Tamiang",9,0.6755
+Keluhan Fisik & Kesehatan,"Desa Sekoci, Langkat",8,0.6262
+Keluhan Fisik & Kesehatan,Langsa,13,0.6661
+Keluhan Fisik & Kesehatan,"Nagari Ulakan, Padang Pariaman",10,0.6257
+Keluhan Fisik & Kesehatan,Pidie Jaya,8,0.6981
+Keluhan Fisik & Kesehatan,Sibolga Utara,47,0.6657
+Keluhan Fisik & Kesehatan,Tapsel,30,0.7148
+Keluhan Fisik & Kesehatan,Tapteng,23,0.6553
+Kerusakan Rumah & Bantuan,Aceh Tamiang,8,0.6874
+Kerusakan Rumah & Bantuan,Aceh Utara,15,0.7752
+Kerusakan Rumah & Bantuan,Agam,14,0.6016
+Kerusakan Rumah & Bantuan,"Desa Kuala Penaga, Aceh Tamiang",6,0.687
+Kerusakan Rumah & Bantuan,"Desa Sekoci, Langkat",8,0.634
+Kerusakan Rumah & Bantuan,Langsa,13,0.6478
+Kerusakan Rumah & Bantuan,"Nagari Ulakan, Padang Pariaman",9,0.5733
+Kerusakan Rumah & Bantuan,Pidie Jaya,3,0.7153
+Kerusakan Rumah & Bantuan,Sibolga Utara,33,0.6911
+Kerusakan Rumah & Bantuan,Tapsel,12,0.7522
+Kerusakan Rumah & Bantuan,Tapteng,15,0.5643
+Ketakutan & Dampak Banjir,Aceh Tamiang,19,0.6509
+Ketakutan & Dampak Banjir,Aceh Utara,46,0.735
+Ketakutan & Dampak Banjir,Agam,30,0.6681
+Ketakutan & Dampak Banjir,"Desa Kuala Penaga, Aceh Tamiang",16,0.6941
+Ketakutan & Dampak Banjir,"Desa Sekoci, Langkat",31,0.7411
+Ketakutan & Dampak Banjir,Langsa,29,0.6749
+Ketakutan & Dampak Banjir,"Nagari Ulakan, Padang Pariaman",21,0.7481
+Ketakutan & Dampak Banjir,Pidie Jaya,20,0.7102
+Ketakutan & Dampak Banjir,Sibolga Utara,41,0.7012
+Ketakutan & Dampak Banjir,Tapsel,45,0.7267
+Ketakutan & Dampak Banjir,Tapteng,33,0.656
