@@ -289,10 +289,21 @@ with tab1:
             textfont=dict(size=11, color="#e6edf3"),
             hovertemplate="<b>%{y}</b><br>Responden: %{x}<extra></extra>",
         ))
-        fig_bar.update_layout(**PLOTLY_LAYOUT, height=420,
+        # Update layout dengan benar
+        fig_bar.update_layout(**PLOTLY_LAYOUT) # Gunakan template dasar dulu
+        
+        fig_bar.update_layout(
+            height=420,
             title=dict(text="Jumlah Responden per Topik", font=dict(size=14)),
-            xaxis_title="Jumlah Responden", yaxis_title="",
-            yaxis=dict(gridcolor="#21262d", autorange="reversed"),
+            xaxis_title="Jumlah Responden",
+            # Gabungkan pengaturan yaxis di sini agar tidak double
+            yaxis=dict(
+                title="", 
+                gridcolor="#21262d", 
+                autorange="reversed",
+                linecolor="#30363d",  # Memastikan setting dari PLOTLY_LAYOUT tetap ada
+                tickcolor="#30363d"
+            )
         )
         st.plotly_chart(fig_bar, use_container_width=True)
 
