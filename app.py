@@ -291,7 +291,6 @@ with tab1:
                 hovertemplate="<b>%{y}</b><br>Responden: %{x}<extra></extra>",
             ))
             
-            # Menerapkan base layout dan menimpa yang spesifik
             fig_bar.update_layout(**PLOTLY_LAYOUT)
             fig_bar.update_layout(
                 height=420,
@@ -300,7 +299,7 @@ with tab1:
             fig_bar.update_xaxes(title_text="Jumlah Responden")
             fig_bar.update_yaxes(autorange="reversed")
             
-            st.plotly_chart(fig_bar, use_container_width=True)
+            st.plotly_chart(fig_bar, width="stretch", key="chart_bar_overview")
 
         with col_donut:
             fig_pie = go.Figure(go.Pie(
@@ -325,7 +324,7 @@ with tab1:
                 showlegend=False,
                 margin=dict(t=40, b=10, l=10, r=10),
             )
-            st.plotly_chart(fig_pie, use_container_width=True)
+            st.plotly_chart(fig_pie, width="stretch", key="chart_pie_overview")
     else:
         st.info("Tidak ada data untuk ditampilkan pada filter ini.")
 
@@ -371,7 +370,7 @@ with tab2:
             )
             fig_prob.update_xaxes(range=[0, 0.85])
             
-            st.plotly_chart(fig_prob, use_container_width=True)
+            st.plotly_chart(fig_prob, width="stretch", key="chart_prob_qc")
 
         with qc2:
             conf_level = (
@@ -407,7 +406,7 @@ with tab2:
             )
             fig_conf.update_xaxes(title_text="Persentase (%)")
             
-            st.plotly_chart(fig_conf, use_container_width=True)
+            st.plotly_chart(fig_conf, width="stretch", key="chart_conf_qc")
 
         st.markdown("---")
         st.markdown("#### Sebaran Probabilitas & Ukuran Topik")
@@ -446,15 +445,12 @@ with tab2:
             fig_scatter.update_xaxes(title_text="Jumlah Responden")
             fig_scatter.update_yaxes(title_text="Rata-rata Probabilitas")
             
-            st.plotly_chart(fig_scatter, use_container_width=True)
+            st.plotly_chart(fig_scatter, width="stretch", key="chart_scatter_qc")
 
         with s2:
             fig_box = go.Figure()
             for t in sorted(fdf["topic_label"].unique()):
-                # 1. Ambil warna dasar hex
                 hex_color = TOPIC_COLORS.get(t, "#58a6ff")
-                
-                # 2. Konversi hex ke rgb, lalu tambahkan alpha 0.2 (setara dengan hex "33")
                 hex_clean = hex_color.lstrip('#')
                 r, g, b = tuple(int(hex_clean[i:i+2], 16) for i in (0, 2, 4))
                 rgba_fill = f"rgba({r}, {g}, {b}, 0.2)"
@@ -465,7 +461,7 @@ with tab2:
                     boxpoints="outliers",
                     marker_color=hex_color,
                     line_color=hex_color,
-                    fillcolor=rgba_fill,  # Gunakan format rgba yang valid
+                    fillcolor=rgba_fill,
                     boxmean=True,
                     hovertemplate="<b>%{x}</b><br>%{y:.3f}<extra></extra>",
                 ))
@@ -479,18 +475,7 @@ with tab2:
             fig_box.update_xaxes(tickangle=-20)
             fig_box.update_yaxes(title_text="Probabilitas")
             
-            st.plotly_chart(fig_box, use_container_width=True)
-            
-            fig_box.update_layout(**PLOTLY_LAYOUT)
-            fig_box.update_layout(
-                height=400,
-                title=dict(text="Sebaran Probabilitas per Topik", font=dict(size=14)),
-                showlegend=False
-            )
-            fig_box.update_xaxes(tickangle=-20)
-            fig_box.update_yaxes(title_text="Probabilitas")
-            
-            st.plotly_chart(fig_box, use_container_width=True)
+            st.plotly_chart(fig_box, width="stretch", key="chart_box_qc")
     else:
         st.info("Tidak ada data untuk ditampilkan pada filter ini.")
 
@@ -528,7 +513,7 @@ with tab3:
             fig_gbar.update_xaxes(title_text="Jumlah")
             fig_gbar.update_yaxes(autorange="reversed")
             
-            st.plotly_chart(fig_gbar, use_container_width=True)
+            st.plotly_chart(fig_gbar, width="stretch", key="chart_gbar_demo")
 
         with gc2:
             gender_total = fdf["Jenis Kelamin"].value_counts().reset_index()
@@ -547,7 +532,7 @@ with tab3:
                 title=dict(text="Proporsi Jenis Kelamin (Total)", font=dict(size=13)),
                 showlegend=False,
             )
-            st.plotly_chart(fig_gpie, use_container_width=True)
+            st.plotly_chart(fig_gpie, width="stretch", key="chart_gpie_demo")
 
         # 100% stacked
         gender_pct = gender_topic.copy()
@@ -571,7 +556,7 @@ with tab3:
             legend=dict(orientation="h", yanchor="bottom", y=1.02)
         )
         fig_g100.update_xaxes(title_text="Persentase (%)", range=[0, 100])
-        st.plotly_chart(fig_g100, use_container_width=True)
+        st.plotly_chart(fig_g100, width="stretch", key="chart_g100_demo")
 
         st.markdown("---")
 
@@ -609,7 +594,7 @@ with tab3:
             )
             fig_ubar.update_xaxes(tickangle=-30)
             fig_ubar.update_yaxes(title_text="Jumlah Responden")
-            st.plotly_chart(fig_ubar, use_container_width=True)
+            st.plotly_chart(fig_ubar, width="stretch", key="chart_ubar_demo")
 
         with uc2:
             umur_total = fdf["Kelompok_Umur"].value_counts().reset_index()
@@ -628,7 +613,7 @@ with tab3:
                 title=dict(text="Proporsi Kelompok Umur (Total)", font=dict(size=13)),
                 showlegend=False,
             )
-            st.plotly_chart(fig_upie, use_container_width=True)
+            st.plotly_chart(fig_upie, width="stretch", key="chart_upie_demo")
 
         # Matrix umur x topik
         st.markdown("#### 📋 Matrix Kelompok Umur × Topik")
@@ -650,7 +635,7 @@ with tab3:
             title=dict(text="Heatmap: Kelompok Umur × Topik", font=dict(size=13))
         )
         fig_heat_umur.update_xaxes(tickangle=-25)
-        st.plotly_chart(fig_heat_umur, use_container_width=True)
+        st.plotly_chart(fig_heat_umur, width="stretch", key="chart_heat_umur_demo")
     else:
         st.info("Tidak ada data untuk ditampilkan pada filter ini.")
 
@@ -684,7 +669,7 @@ with tab4:
         )
         fig_heat.update_xaxes(tickangle=-30, gridcolor="rgba(0,0,0,0)")
         fig_heat.update_yaxes(gridcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig_heat, use_container_width=True)
+        st.plotly_chart(fig_heat, width="stretch", key="chart_heat_wilayah")
 
         wc1, wc2 = st.columns(2)
 
@@ -711,7 +696,7 @@ with tab4:
                 showlegend=False
             )
             fig_wbar.update_xaxes(title_text="Jumlah Responden")
-            st.plotly_chart(fig_wbar, use_container_width=True)
+            st.plotly_chart(fig_wbar, width="stretch", key="chart_wbar_wilayah")
 
         with wc2:
             # Top wilayah bar
@@ -737,7 +722,7 @@ with tab4:
             )
             fig_wt.update_xaxes(title_text="Jumlah Responden")
             fig_wt.update_yaxes(autorange="reversed")
-            st.plotly_chart(fig_wt, use_container_width=True)
+            st.plotly_chart(fig_wt, width="stretch", key="chart_wt_wilayah")
 
         # Wilayah selector detail
         st.markdown("---")
@@ -769,7 +754,7 @@ with tab4:
         )
         fig_one.update_xaxes(tickangle=-25)
         fig_one.update_yaxes(title_text="Jumlah Responden")
-        st.plotly_chart(fig_one, use_container_width=True)
+        st.plotly_chart(fig_one, width="stretch", key="chart_one_wilayah")
     else:
         st.info("Tidak ada data untuk ditampilkan pada filter ini.")
 
@@ -811,7 +796,7 @@ with tab5:
         st.markdown(f"**{len(disp):,} respons** ditampilkan")
         st.dataframe(
             disp.reset_index(drop=True),
-            use_container_width=True,
+            width="stretch",
             height=480,
             column_config={
                 "Probabilitas": st.column_config.ProgressColumn(
@@ -860,7 +845,7 @@ with tab6:
                 "Persen": "{:.1f}%",
                 "High_Pct": "{:.1f}%",
             }).background_gradient(cmap="Blues", subset=["Jumlah"]),
-            use_container_width=True
+            width="stretch"
         )
 
         st.markdown("#### Radar Chart Profil Dampak")
@@ -890,7 +875,7 @@ with tab6:
                 angularaxis=dict(color="#e6edf3", gridcolor="#21262d"),
             )
         )
-        st.plotly_chart(fig_radar, use_container_width=True)
+        st.plotly_chart(fig_radar, width="stretch", key="chart_radar_summary")
 
         st.markdown("#### Rekomendasi & Insight Utama")
         st.markdown("""
