@@ -294,7 +294,7 @@ with tab1:
             xaxis_title="Jumlah Responden", yaxis_title="",
             yaxis=dict(gridcolor="#21262d", autorange="reversed"),
         )
-        st.plotly_chart(fig_bar, width='stretch')
+        st.plotly_chart(fig_bar, use_container_width=True)
 
     with col_donut:
         fig_pie = go.Figure(go.Pie(
@@ -316,7 +316,7 @@ with tab1:
             showlegend=False,
             margin=dict(t=40, b=10, l=10, r=10),
         )
-        st.plotly_chart(fig_pie, width='stretch')
+        st.plotly_chart(fig_pie, use_container_width=True)
 
     # Ranking cards
     st.markdown("#### 🏆 Ranking Topik")
@@ -369,7 +369,7 @@ with tab2:
             xaxis=dict(range=[0, 0.85], gridcolor="#21262d"),
             yaxis=dict(gridcolor="#21262d"),
         )
-        st.plotly_chart(fig_prob, width='stretch')
+        st.plotly_chart(fig_prob, use_container_width=True)
 
     with col_r:
         # Confidence level stacked bar
@@ -404,7 +404,7 @@ with tab2:
             yaxis=dict(gridcolor="#21262d"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
         )
-        st.plotly_chart(fig_conf, width='stretch')
+        st.plotly_chart(fig_conf, use_container_width=True)
 
     # Scatter: Jumlah vs Avg Probability
     scatter_df = (
@@ -438,7 +438,7 @@ with tab2:
         yaxis_title="Rata-rata Probabilitas",
         showlegend=False,
     )
-    st.plotly_chart(fig_scatter, width='stretch')
+    st.plotly_chart(fig_scatter, use_container_width=True)
 
     # Distribution histogram
     st.markdown("#### Distribusi Probabilitas per Topik (Box Plot)")
@@ -460,7 +460,7 @@ with tab2:
         showlegend=False,
         xaxis=dict(tickangle=-20, gridcolor="#21262d"),
     )
-    st.plotly_chart(fig_box, width='stretch')
+    st.plotly_chart(fig_box, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -492,7 +492,7 @@ with tab3:
             xaxis_title="Jumlah", yaxis=dict(gridcolor="#21262d", autorange="reversed"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02),
         )
-        st.plotly_chart(fig_gbar, width='stretch')
+        st.plotly_chart(fig_gbar, use_container_width=True)
 
     with gc2:
         total_gender = gender_topic.groupby("Jenis Kelamin")["n"].sum().reset_index()
@@ -508,7 +508,7 @@ with tab3:
             title=dict(text="Proporsi Jenis Kelamin (Total)", font=dict(size=13)),
             showlegend=False,
         )
-        st.plotly_chart(fig_gpie, width='stretch')
+        st.plotly_chart(fig_gpie, use_container_width=True)
 
     # 100% stacked
     gender_pct = gender_topic.copy()
@@ -530,7 +530,7 @@ with tab3:
         yaxis=dict(gridcolor="#21262d"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
     )
-    st.plotly_chart(fig_g100, width='stretch')
+    st.plotly_chart(fig_g100, use_container_width=True)
 
     st.markdown("---")
 
@@ -565,7 +565,7 @@ with tab3:
             xaxis=dict(tickangle=-30, gridcolor="#21262d"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02),
         )
-        st.plotly_chart(fig_ubar, width='stretch')
+        st.plotly_chart(fig_ubar, use_container_width=True)
 
     with uc2:
         umur_total = fdf["Kelompok_Umur"].value_counts().reset_index()
@@ -582,7 +582,7 @@ with tab3:
             title=dict(text="Proporsi Kelompok Umur (Total)", font=dict(size=13)),
             showlegend=False,
         )
-        st.plotly_chart(fig_upie, width='stretch')
+        st.plotly_chart(fig_upie, use_container_width=True)
 
     # Matrix umur x topik
     st.markdown("#### 📋 Matrix Kelompok Umur × Topik")
@@ -601,7 +601,7 @@ with tab3:
         title=dict(text="Heatmap: Kelompok Umur × Topik", font=dict(size=13)),
         xaxis=dict(tickangle=-25),
     )
-    st.plotly_chart(fig_heat_umur, width='stretch')
+    st.plotly_chart(fig_heat_umur, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -630,7 +630,7 @@ with tab4:
         yaxis=dict(gridcolor="rgba(0,0,0,0)"),
         margin=dict(t=50, b=80, l=200, r=20),
     )
-    st.plotly_chart(fig_heat, width='stretch')
+    st.plotly_chart(fig_heat, use_container_width=True)
 
     wc1, wc2 = st.columns(2)
 
@@ -655,7 +655,7 @@ with tab4:
             yaxis=dict(gridcolor="#21262d"),
             showlegend=False,
         )
-        st.plotly_chart(fig_wbar, width='stretch')
+        st.plotly_chart(fig_wbar, use_container_width=True)
 
     with wc2:
         # Top wilayah bar
@@ -678,7 +678,7 @@ with tab4:
             xaxis_title="Jumlah Responden",
             yaxis=dict(autorange="reversed"),
         )
-        st.plotly_chart(fig_wt, width='stretch')
+        st.plotly_chart(fig_wt, use_container_width=True)
 
     # Wilayah selector detail
     st.markdown("---")
@@ -707,7 +707,7 @@ with tab4:
         xaxis=dict(tickangle=-25, gridcolor="#21262d"),
         yaxis_title="Jumlah Responden",
     )
-    st.plotly_chart(fig_one, width='stretch')
+    st.plotly_chart(fig_one, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -746,7 +746,7 @@ with tab5:
     st.markdown(f"**{len(disp):,} respons** ditampilkan")
     st.dataframe(
         disp.reset_index(drop=True),
-        width='stretch',
+        use_container_width=True,
         height=480,
         column_config={
             "Probabilitas": st.column_config.ProgressColumn(
@@ -848,7 +848,7 @@ with tab6:
             ),
             showlegend=False,
         )
-        st.plotly_chart(fig_radar, width='stretch')
+        st.plotly_chart(fig_radar, use_container_width=True)
 
     with rc2:
         st.markdown("#### 📊 Tabel Ringkasan")
@@ -856,7 +856,7 @@ with tab6:
         disp_sum.columns = ["Topik","Responden","%","Avg Prob","% High"]
         st.dataframe(
             disp_sum.reset_index(drop=True),
-            width='stretch',
+            use_container_width=True,
             height=380,
             column_config={
                 "Avg Prob": st.column_config.ProgressColumn("Avg Prob", min_value=0, max_value=1, format="%.3f"),
