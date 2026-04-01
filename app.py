@@ -451,16 +451,35 @@ with tab2:
         with s2:
             fig_box = go.Figure()
             for t in sorted(fdf["topic_label"].unique()):
+                # 1. Ambil warna dasar hex
+                hex_color = TOPIC_COLORS.get(t, "#58a6ff")
+                
+                # 2. Konversi hex ke rgb, lalu tambahkan alpha 0.2 (setara dengan hex "33")
+                hex_clean = hex_color.lstrip('#')
+                r, g, b = tuple(int(hex_clean[i:i+2], 16) for i in (0, 2, 4))
+                rgba_fill = f"rgba({r}, {g}, {b}, 0.2)"
+
                 fig_box.add_trace(go.Box(
                     y=fdf[fdf["topic_label"] == t]["topic_probability"],
                     name=t[:25] + ("..." if len(t) > 25 else ""),
                     boxpoints="outliers",
-                    marker_color=TOPIC_COLORS.get(t, "#58a6ff"),
-                    line_color=TOPIC_COLORS.get(t, "#58a6ff"),
-                    fillcolor=TOPIC_COLORS.get(t, "#58a6ff") + "33",
+                    marker_color=hex_color,
+                    line_color=hex_color,
+                    fillcolor=rgba_fill,  # Gunakan format rgba yang valid
                     boxmean=True,
                     hovertemplate="<b>%{x}</b><br>%{y:.3f}<extra></extra>",
                 ))
+            
+            fig_box.update_layout(**PLOTLY_LAYOUT)
+            fig_box.update_layout(
+                height=400,
+                title=dict(text="Sebaran Probabilitas per Topik", font=dict(size=14)),
+                showlegend=False
+            )
+            fig_box.update_xaxes(tickangle=-20)
+            fig_box.update_yaxes(title_text="Probabilitas")
+            
+            st.plotly_chart(fig_box, use_container_width=True)
             
             fig_box.update_layout(**PLOTLY_LAYOUT)
             fig_box.update_layout(
