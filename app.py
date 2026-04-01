@@ -322,10 +322,15 @@ with tab1:
             x=0.5, y=0.5, showarrow=False,
             font=dict(size=16, color="#e6edf3"),
         )
-        fig_pie.update_layout(**PLOTLY_LAYOUT, height=420,
+        # 1. Masukkan layout dasar dulu
+        fig_pie.update_layout(**PLOTLY_LAYOUT)
+        
+        # 2. Timpa (override) bagian yang ingin dibedakan untuk chart ini
+        fig_pie.update_layout(
+            height=420,
             title=dict(text="Proporsi Topik (%)", font=dict(size=14)),
             showlegend=False,
-            margin=dict(t=40, b=10, l=10, r=10),
+            margin=dict(t=40, b=10, l=10, r=10), # Nilai ini akan menimpa nilai dari PLOTLY_LAYOUT
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
