@@ -294,7 +294,7 @@ with tab1:
             xaxis_title="Jumlah Responden", yaxis_title="",
             yaxis=dict(gridcolor="#21262d", autorange="reversed"),
         )
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width="stretch")
 
     with col_donut:
         fig_pie = go.Figure(go.Pie(
@@ -308,197 +308,96 @@ with tab1:
         ))
         fig_pie.add_annotation(
             text=f"<b>{len(fdf)}</b><br><span style='font-size:10px'>Responden</span>",
-            x=0.5, y=0.5, showarrow=False,
-            font=dict(size=16, color="#e6edf3"),
+            showarrow=False, font=dict(size=16, color="#e6edf3")
         )
         fig_pie.update_layout(**PLOTLY_LAYOUT, height=420,
-            title=dict(text="Proporsi Topik (%)", font=dict(size=14)),
+            title=dict(text="Proporsi Topik", font=dict(size=14)),
             showlegend=False,
-            margin=dict(t=40, b=10, l=10, r=10),
         )
-        st.plotly_chart(fig_pie, use_container_width=True)
-
-    # Ranking cards
-    st.markdown("#### 🏆 Ranking Topik")
-    rank_cols = st.columns(4)
-    medals = ["🥇", "🥈", "🥉", "4️⃣"]
-    for i, (_, row) in enumerate(topic_counts.head(4).iterrows()):
-        color = row["Warna"]
-        with rank_cols[i]:
-            st.markdown(f"""
-            <div style='background:#161b22;border:1px solid {color};border-radius:12px;padding:16px;text-align:center'>
-              <div style='font-size:24px'>{medals[i]}</div>
-              <div style='font-size:11px;color:#8b949e;margin:6px 0 4px 0;line-height:1.4'>{row["topic_label"]}</div>
-              <div style='font-size:22px;font-weight:800;color:{color}'>{row["Jumlah"]}</div>
-              <div style='font-size:10px;color:#8b949e'>responden · {row["Persen"]}%</div>
-            </div>
-            """, unsafe_allow_html=True)
+        st.plotly_chart(fig_pie, width="stretch")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 2 — KUALITAS MODEL
 # ══════════════════════════════════════════════════════════════════════════════
 with tab2:
-    st.markdown("### Kualitas & Kepercayaan Model")
+    st.markdown("### Analisis Probabilitas & Confidence")
 
-    col_l, col_r = st.columns(2)
+    qc1, qc2 = st.columns(2)
 
-    with col_l:
-        # Avg probability bar
-        prob_topic = (
-            fdf.groupby("topic_label")["topic_probability"]
-            .mean().reset_index()
-            .sort_values("topic_probability", ascending=True)
+    with qc1:
+        fig_hist = px.histogram(
+            fdf, x="topic_probability", nbins=20,
+            color_discrete_sequence=["#388bfd"],
+            labels={"topic_probability": "Probabilitas Topik"}
         )
-        fig_prob = go.Figure(go.Bar(
-            y=prob_topic["topic_label"],
-            x=prob_topic["topic_probability"],
-            orientation="h",
-            marker=dict(
-                color=prob_topic["topic_probability"],
-                colorscale=[[0,"#f85149"],[0.5,"#e3b341"],[1,"#3fb950"]],
-                showscale=True,
-                colorbar=dict(title="Prob", tickfont=dict(color="#e6edf3"), titlefont=dict(color="#e6edf3")),
-            ),
-            text=[f"{v:.3f}" for v in prob_topic["topic_probability"]],
-            textposition="outside",
-            textfont=dict(color="#e6edf3", size=11),
-            hovertemplate="<b>%{y}</b><br>Avg Probability: %{x:.4f}<extra></extra>",
+        fig_hist.update_layout(**PLOTLY_LAYOUT, height=380,
+            title=dict(text="Distribusi Skor Probabilitas", font=dict(size=13)),
+            yaxis_title="Jumlah Responden",
+        )
+        st.plotly_chart(fig_hist, width="stretch")
+
+    with qc2:
+        conf_counts = fdf["Confidence_Level"].value_counts().reset_index()
+        conf_counts.columns = ["Level", "n"]
+        fig_conf = go.Figure(go.Bar(
+            x=conf_counts["Level"], y=conf_counts["n"],
+            marker_color=["#3fb950", "#e3b341", "#f85149"],
+            text=conf_counts["n"], textposition="outside",
+            textfont=dict(color="#e6edf3"),
         ))
-        fig_prob.update_layout(**PLOTLY_LAYOUT, height=380,
-            title=dict(text="Rata-rata Probabilitas per Topik", font=dict(size=14)),
-            xaxis=dict(range=[0, 0.85], gridcolor="#21262d"),
-            yaxis=dict(gridcolor="#21262d"),
-        )
-        st.plotly_chart(fig_prob, use_container_width=True)
-
-    with col_r:
-        # Confidence level stacked bar
-        conf_order = ["Tinggi (≥0.75)", "Sedang (0.50–0.74)", "Rendah (<0.50)"]
-        conf_colors = {"Tinggi (≥0.75)": "#3fb950", "Sedang (0.50–0.74)": "#e3b341", "Rendah (<0.50)": "#f85149"}
-
-        conf_df = (
-            fdf.groupby(["topic_label", "Confidence_Level"])
-            .size().reset_index(name="n")
-        )
-        total_per_topic = conf_df.groupby("topic_label")["n"].sum()
-        conf_df["pct"] = conf_df.apply(lambda r: r["n"]/total_per_topic[r["topic_label"]]*100, axis=1)
-
-        fig_conf = go.Figure()
-        for cl in conf_order:
-            sub = conf_df[conf_df["Confidence_Level"] == cl]
-            fig_conf.add_trace(go.Bar(
-                name=cl,
-                y=sub["topic_label"],
-                x=sub["pct"],
-                orientation="h",
-                marker_color=conf_colors[cl],
-                text=[f"{v:.0f}%" for v in sub["pct"]],
-                textposition="inside",
-                textfont=dict(size=10, color="#0d1117"),
-                hovertemplate=f"<b>%{{y}}</b><br>{cl}: %{{x:.1f}}%<extra></extra>",
-            ))
         fig_conf.update_layout(**PLOTLY_LAYOUT, height=380,
-            title=dict(text="Distribusi Level Kepercayaan (%)", font=dict(size=14)),
-            barmode="stack",
-            xaxis=dict(title="Persentase (%)", gridcolor="#21262d"),
-            yaxis=dict(gridcolor="#21262d"),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+            title=dict(text="Jumlah Responden per Level Confidence", font=dict(size=13)),
+            yaxis_title="Jumlah Responden",
         )
-        st.plotly_chart(fig_conf, use_container_width=True)
+        st.plotly_chart(fig_conf, width="stretch")
 
-    # Scatter: Jumlah vs Avg Probability
-    scatter_df = (
-        fdf.groupby("topic_label")
-        .agg(Jumlah=("topic_label","count"), Avg_Prob=("topic_probability","mean"))
-        .reset_index()
+    st.markdown("#### Probabilitas per Topik")
+    fig_box = px.box(
+        fdf, x="topic_label", y="topic_probability",
+        color="topic_label", color_discrete_map=TOPIC_COLORS,
     )
-    scatter_df["Warna"] = scatter_df["topic_label"].map(TOPIC_COLORS)
-
-    fig_scatter = go.Figure()
-    for _, row in scatter_df.iterrows():
-        fig_scatter.add_trace(go.Scatter(
-            x=[row["Jumlah"]],
-            y=[row["Avg_Prob"]],
-            mode="markers+text",
-            marker=dict(size=max(row["Jumlah"]/10, 16), color=row["Warna"], opacity=0.85,
-                        line=dict(color="#0d1117", width=2)),
-            text=[row["topic_label"].split(" & ")[0]],
-            textposition="top center",
-            textfont=dict(size=10, color="#e6edf3"),
-            name=row["topic_label"],
-            hovertemplate=f"<b>{row['topic_label']}</b><br>Responden: {row['Jumlah']}<br>Avg Prob: {row['Avg_Prob']:.3f}<extra></extra>",
-        ))
-
-    fig_scatter.add_hline(y=fdf["topic_probability"].mean(), line_dash="dash",
-                          line_color="#8b949e", annotation_text="Rata-rata global",
-                          annotation_font_color="#8b949e")
-    fig_scatter.update_layout(**PLOTLY_LAYOUT, height=360,
-        title=dict(text="Ukuran Topik vs Kepercayaan Model (ukuran bubble = jumlah responden)", font=dict(size=13)),
-        xaxis_title="Jumlah Responden",
-        yaxis_title="Rata-rata Probabilitas",
-        showlegend=False,
-    )
-    st.plotly_chart(fig_scatter, use_container_width=True)
-
-    # Distribution histogram
-    st.markdown("#### Distribusi Probabilitas per Topik (Box Plot)")
-    topic_order = fdf["topic_label"].value_counts().index.tolist()
-    fig_box = go.Figure()
-    for t in topic_order:
-        sub = fdf[fdf["topic_label"] == t]["topic_probability"]
-        fig_box.add_trace(go.Box(
-            y=sub, name=t,
-            marker_color=TOPIC_COLORS.get(t, "#58a6ff"),
-            line_color=TOPIC_COLORS.get(t, "#58a6ff"),
-            fillcolor=TOPIC_COLORS.get(t, "#58a6ff") + "33",
-            boxmean=True,
-            hovertemplate="<b>%{x}</b><br>%{y:.3f}<extra></extra>",
-        ))
     fig_box.update_layout(**PLOTLY_LAYOUT, height=400,
-        title=dict(text="Sebaran Probabilitas per Topik", font=dict(size=14)),
-        yaxis_title="Probabilitas",
+        title=dict(text="Variasi Probabilitas per Topik", font=dict(size=13)),
+        xaxis=dict(tickangle=-25, title=""),
+        yaxis_title="Skor Probabilitas",
         showlegend=False,
-        xaxis=dict(tickangle=-20, gridcolor="#21262d"),
     )
-    st.plotly_chart(fig_box, use_container_width=True)
-
+    st.plotly_chart(fig_box, width="stretch")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 3 — DEMOGRAFI
 # ══════════════════════════════════════════════════════════════════════════════
 with tab3:
-    st.markdown("### Analisis Demografi Responden")
+    st.markdown("### Profil Demografi Responden")
 
     # ── Jenis Kelamin ─────────────────────────────────────────────────────────
     st.markdown("#### 👤 Berdasarkan Jenis Kelamin")
-    gc1, gc2 = st.columns(2)
-
     gender_topic = (
         fdf.groupby(["topic_label", "Jenis Kelamin"])
         .size().reset_index(name="n")
     )
 
+    gc1, gc2 = st.columns([3, 2])
+
     with gc1:
-        fig_gbar = go.Figure()
-        for g, color in [("Perempuan", "#ff7b72"), ("Laki laki", "#388bfd")]:
-            sub = gender_topic[gender_topic["Jenis Kelamin"] == g]
-            fig_gbar.add_trace(go.Bar(
-                name=g, y=sub["topic_label"], x=sub["n"],
-                orientation="h", marker_color=color,
-                hovertemplate=f"<b>%{{y}}</b><br>{g}: %{{x}}<extra></extra>",
-            ))
-        fig_gbar.update_layout(**PLOTLY_LAYOUT, height=380, barmode="group",
-            title=dict(text="Jumlah Responden: Topik × Jenis Kelamin", font=dict(size=13)),
-            xaxis_title="Jumlah", yaxis=dict(gridcolor="#21262d", autorange="reversed"),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02),
+        fig_gbar = px.bar(
+            gender_topic, x="topic_label", y="n", color="Jenis Kelamin",
+            barmode="group", color_discrete_map={"Perempuan": "#ff7b72", "Laki laki": "#388bfd"}
         )
-        st.plotly_chart(fig_gbar, use_container_width=True)
+        fig_gbar.update_layout(**PLOTLY_LAYOUT, height=380,
+            title=dict(text="Distribusi Jenis Kelamin per Topik", font=dict(size=13)),
+            yaxis_title="Jumlah Responden",
+            xaxis=dict(tickangle=-30, title=""),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        )
+        st.plotly_chart(fig_gbar, width="stretch")
 
     with gc2:
-        total_gender = gender_topic.groupby("Jenis Kelamin")["n"].sum().reset_index()
+        gender_total = fdf["Jenis Kelamin"].value_counts().reset_index()
+        gender_total.columns = ["Jenis Kelamin", "n"]
         fig_gpie = go.Figure(go.Pie(
-            labels=total_gender["Jenis Kelamin"],
-            values=total_gender["n"],
+            labels=gender_total["Jenis Kelamin"],
+            values=gender_total["n"],
             hole=0.5,
             marker_colors=["#ff7b72", "#388bfd"],
             textinfo="label+percent",
@@ -508,7 +407,7 @@ with tab3:
             title=dict(text="Proporsi Jenis Kelamin (Total)", font=dict(size=13)),
             showlegend=False,
         )
-        st.plotly_chart(fig_gpie, use_container_width=True)
+        st.plotly_chart(fig_gpie, width="stretch")
 
     # 100% stacked
     gender_pct = gender_topic.copy()
@@ -530,7 +429,7 @@ with tab3:
         yaxis=dict(gridcolor="#21262d"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
     )
-    st.plotly_chart(fig_g100, use_container_width=True)
+    st.plotly_chart(fig_g100, width="stretch")
 
     st.markdown("---")
 
@@ -565,7 +464,7 @@ with tab3:
             xaxis=dict(tickangle=-30, gridcolor="#21262d"),
             legend=dict(orientation="h", yanchor="bottom", y=1.02),
         )
-        st.plotly_chart(fig_ubar, use_container_width=True)
+        st.plotly_chart(fig_ubar, width="stretch")
 
     with uc2:
         umur_total = fdf["Kelompok_Umur"].value_counts().reset_index()
@@ -582,7 +481,7 @@ with tab3:
             title=dict(text="Proporsi Kelompok Umur (Total)", font=dict(size=13)),
             showlegend=False,
         )
-        st.plotly_chart(fig_upie, use_container_width=True)
+        st.plotly_chart(fig_upie, width="stretch")
 
     # Matrix umur x topik
     st.markdown("#### 📋 Matrix Kelompok Umur × Topik")
@@ -601,7 +500,7 @@ with tab3:
         title=dict(text="Heatmap: Kelompok Umur × Topik", font=dict(size=13)),
         xaxis=dict(tickangle=-25),
     )
-    st.plotly_chart(fig_heat_umur, use_container_width=True)
+    st.plotly_chart(fig_heat_umur, width="stretch")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -630,7 +529,7 @@ with tab4:
         yaxis=dict(gridcolor="rgba(0,0,0,0)"),
         margin=dict(t=50, b=80, l=200, r=20),
     )
-    st.plotly_chart(fig_heat, use_container_width=True)
+    st.plotly_chart(fig_heat, width="stretch")
 
     wc1, wc2 = st.columns(2)
 
@@ -655,7 +554,7 @@ with tab4:
             yaxis=dict(gridcolor="#21262d"),
             showlegend=False,
         )
-        st.plotly_chart(fig_wbar, use_container_width=True)
+        st.plotly_chart(fig_wbar, width="stretch")
 
     with wc2:
         # Top wilayah bar
@@ -678,7 +577,7 @@ with tab4:
             xaxis_title="Jumlah Responden",
             yaxis=dict(autorange="reversed"),
         )
-        st.plotly_chart(fig_wt, use_container_width=True)
+        st.plotly_chart(fig_wt, width="stretch")
 
     # Wilayah selector detail
     st.markdown("---")
@@ -707,7 +606,7 @@ with tab4:
         xaxis=dict(tickangle=-25, gridcolor="#21262d"),
         yaxis_title="Jumlah Responden",
     )
-    st.plotly_chart(fig_one, use_container_width=True)
+    st.plotly_chart(fig_one, width="stretch")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -746,7 +645,7 @@ with tab5:
     st.markdown(f"**{len(disp):,} respons** ditampilkan")
     st.dataframe(
         disp.reset_index(drop=True),
-        use_container_width=True,
+        width="stretch",
         height=480,
         column_config={
             "Probabilitas": st.column_config.ProgressColumn(
@@ -848,7 +747,7 @@ with tab6:
             ),
             showlegend=False,
         )
-        st.plotly_chart(fig_radar, use_container_width=True)
+        st.plotly_chart(fig_radar, width="stretch")
 
     with rc2:
         st.markdown("#### 📊 Tabel Ringkasan")
@@ -856,7 +755,7 @@ with tab6:
         disp_sum.columns = ["Topik","Responden","%","Avg Prob","% High"]
         st.dataframe(
             disp_sum.reset_index(drop=True),
-            use_container_width=True,
+            width="stretch",
             height=380,
             column_config={
                 "Avg Prob": st.column_config.ProgressColumn("Avg Prob", min_value=0, max_value=1, format="%.3f"),
